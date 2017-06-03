@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AdoptedStorageAccess</string>
+    <string name="path">Path: %s</string>
+    <string name="open">Open Folder</string>
+    <string name="clipboard">Copy Path to Clipboard</string>
+    <string name="size">Size: %s</string>
+</resources>
