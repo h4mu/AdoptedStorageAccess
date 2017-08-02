@@ -4,4 +4,7 @@
     <string name="open">Open Folder</string>
     <string name="clipboard">Copy Path to Clipboard</string>
     <string name="size">Size: %s</string>
+    <string name="enableActivityAttachment">OI File Manager mode</string>
+    <string name="copiedToClipboard">\'%s\' copied to clipboard.</string>
+    <string name="locationWarning">Warning: Application is not installed in adopted storage. You need to install this application to the storage where you want to store your files.</string>
 </resources>
