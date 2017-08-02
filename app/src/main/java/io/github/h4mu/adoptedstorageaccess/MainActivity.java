@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Checkable;
@@ -22,7 +23,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         final File dir = getFilesDir();
         dir.setReadable(true, false);
         dir.setExecutable(true, false);
@@ -31,21 +31,31 @@ public class MainActivity extends Activity {
         TextView folderPathText = (TextView) findViewById(R.id.folderPathText);
         folderPathText.setText(dir.getPath());
         if (!dir.getAbsolutePath().startsWith("/mnt/expand/")) {
-            findViewById(R.id.warningText).setVisibility(View.VISIBLE);
+            findViewById(R.id.warningLayout).setVisibility(View.VISIBLE);
         }
+
+        Button openAppSettingsButton = (Button) findViewById(R.id.openAppSettingsButton);
+        openAppSettingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.setData(Uri.fromParts("package", getPackageName(), null));
+                startActivity(intent);
+            }
+        });
 
         Button folderButton = (Button) findViewById(R.id.folderButton);
         folderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.fromFile(dir), "resource/folder");
-                if (((Checkable) findViewById(R.id.enableActivityAttachmentSwitch)).isChecked()) {
-                    intent.setData(Uri.fromFile(dir));
+                intent.setData(Uri.fromFile(dir));
+                if (!((Checkable) findViewById(R.id.enableActivityAttachmentSwitch)).isChecked()) {
+                    intent.setType("resource/folder");
                 }
 
-                if (intent.resolveActivityInfo(getPackageManager(), 0) != null)
-                {
+                if (intent.resolveActivityInfo(getPackageManager(), 0) != null) {
                     startActivity(intent);
                 }
             }

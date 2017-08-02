@@ -7,4 +7,5 @@
     <string name="enableActivityAttachment">OI File Manager mode</string>
     <string name="copiedToClipboard">\'%s\' copied to clipboard.</string>
     <string name="locationWarning">Warning: Application is not installed in adopted storage. You need to install this application to the storage where you want to store your files.</string>
+    <string name="openAppSettings">Move to Adopted Storage</string>
 </resources>
