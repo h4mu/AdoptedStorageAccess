@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,44 +32,40 @@ public class MainActivity extends Activity {
         if (!dir.getAbsolutePath().startsWith("/mnt/expand/")) {
             findViewById(R.id.warningLayout).setVisibility(View.VISIBLE);
         }
+    }
 
-        Button openAppSettingsButton = (Button) findViewById(R.id.openAppSettingsButton);
-        openAppSettingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                intent.setData(Uri.fromParts("package", getPackageName(), null));
-                startActivity(intent);
-            }
-        });
+    public void onOpenAppSettingsButtonClick(View view) {
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.fromParts("package", getPackageName(), null));
+        startActivity(intent);
+    }
 
-        Button folderButton = (Button) findViewById(R.id.folderButton);
-        folderButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.fromFile(dir));
-                if (!((Checkable) findViewById(R.id.enableActivityAttachmentSwitch)).isChecked()) {
-                    intent.setType("resource/folder");
-                }
+    public void onFolderButtonClick(View view) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.fromFile(getFilesDir()));
+        if (!((Checkable) findViewById(R.id.enableActivityAttachmentSwitch)).isChecked()) {
+            intent.setType("resource/folder");
+        }
 
-                if (intent.resolveActivityInfo(getPackageManager(), 0) != null) {
-                    startActivity(intent);
-                }
-            }
-        });
+        if (intent.resolveActivityInfo(getPackageManager(), 0) != null) {
+            startActivity(intent);
+        }
+    }
 
-        Button clipboardButton = (Button) findViewById(R.id.clipboardButton);
-        clipboardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                Uri uri = Uri.fromFile(dir);
-                ClipData clip = ClipData.newUri(getContentResolver(), "URI", uri);
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(MainActivity.this, getString(R.string.copiedToClipboard, uri), Toast.LENGTH_LONG).show();
-            }
-        });
+    public void onClipboardButtonClick(View view) {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        Uri uri = Uri.fromFile(getFilesDir());
+        ClipData clip = ClipData.newUri(getContentResolver(), "URI", uri);
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(MainActivity.this, getString(R.string.copiedToClipboard, uri), Toast.LENGTH_LONG).show();
+    }
+
+    public void onSettingsButtonClick(View view) {
+//        startActivity(new Intent(getBaseContext(), SettingsActivity.class));
+    }
+
+    public void onLicenseButtonClick(View view) {
+        startActivity(new Intent(getBaseContext(), LicenseActivity.class));
     }
 }
