@@ -5,8 +5,10 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Checkable;
@@ -28,10 +30,22 @@ public class MainActivity extends Activity {
         dir.setWritable(true, false);
 
         TextView folderPathText = (TextView) findViewById(R.id.folderPathText);
-        folderPathText.setText(dir.getPath());
-        if (!dir.getAbsolutePath().startsWith("/mnt/expand/")) {
-            findViewById(R.id.warningLayout).setVisibility(View.VISIBLE);
+        folderPathText.setText(getString(R.string.path, dir));
+
+        updateWarnings();
+    }
+
+    private void updateWarnings() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!getFilesDir().getAbsolutePath().startsWith("/mnt/expand/")) {
+            findViewById(R.id.warningLayout).setVisibility(sharedPref.getBoolean("locationWarningEnabled", true) ? View.VISIBLE : View.GONE);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateWarnings();
     }
 
     public void onOpenAppSettingsButtonClick(View view) {
@@ -42,10 +56,20 @@ public class MainActivity extends Activity {
     }
 
     public void onFolderButtonClick(View view) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean enableIntentData = sharedPref.getBoolean("enableIntentData", true);
+        boolean enableIntentType = sharedPref.getBoolean("enableIntentType", true);
+        String intentType = sharedPref.getString("intentType", "resource/folder");
+
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.fromFile(getFilesDir()));
-        if (!((Checkable) findViewById(R.id.enableActivityAttachmentSwitch)).isChecked()) {
-            intent.setType("resource/folder");
+        if (enableIntentData && enableIntentType) {
+            intent.setDataAndType(Uri.fromFile(getFilesDir()), intentType);
+        }
+        else if (enableIntentData) {
+            intent.setData(Uri.fromFile(getFilesDir()));
+        }
+        else if (enableIntentType) {
+            intent.setType(intentType);
         }
 
         if (intent.resolveActivityInfo(getPackageManager(), 0) != null) {
@@ -62,10 +86,10 @@ public class MainActivity extends Activity {
     }
 
     public void onSettingsButtonClick(View view) {
-//        startActivity(new Intent(getBaseContext(), SettingsActivity.class));
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 
     public void onLicenseButtonClick(View view) {
-        startActivity(new Intent(getBaseContext(), LicenseActivity.class));
+        startActivity(new Intent(this, LicenseActivity.class));
     }
 }

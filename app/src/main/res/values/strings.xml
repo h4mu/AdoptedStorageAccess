@@ -681,7 +681,15 @@ may consider it more useful to permit linking proprietary applications with
 the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
 &lt;http://www.gnu.org/philosophy/why-not-lgpl.html&gt;."</string>
-    <string name="locationWarning">Warning: Application is not installed in adopted storage. You need to install this application to the storage where you want to store your files.</string>
+    <string name="locationWarning">Warning: Application is not installed in adopted storage. You should install this application to the storage where you want to store your files.</string>
     <string name="openAppSettings">Move to Adopted Storage</string>
     <string name="enableActivityAttachment">OI File Manager mode</string>
+    <string name="locationWarningEnabledTtitle">Warn if not run from adopted storage</string>
+    <string name="locationWarningEnabledSummary">Display a warning message in red with a button that takes the user to the application settings if the application is not installed in the adopted storage to let them change the installation location.</string>
+    <string name="enableIntentDataTitle">Set Intent Data</string>
+    <string name="enableIntentDataSummary">Enable for ES File Explorer and OI File Manager</string>
+    <string name="enableIntentTypeTitle">Set Intent Mime Type</string>
+    <string name="enableIntentTypeSummary">Disable for OI File Manager</string>
+    <string name="intentTypeTitle">Intent Mime Type</string>
+    <string name="intentTypeSummary">See target applications\' intent filters</string>
 </resources>
